@@ -2,6 +2,8 @@ package org.kimrgrey.neural.rest;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -32,7 +34,17 @@ public class NeuralNetworkWebResource {
 	}
 
 	@GET
-	public Response hello() {
-		return Response.ok().entity("Hello, world!").build();
+	public Response list() {
+		Map<String, String> test = new HashMap<String, String>();
+		test.put("Hello", "World");
+		test.put("Bye", "Bye");
+		return Response.ok().entity(test).build();
+	}
+
+	@GET
+	@Path("/create")
+	// @POST
+	public Response create(@QueryParam("input") int input, @QueryParam("output") int output) {
+		return Response.ok().entity(String.format("Input %d and output %d", input, output)).build();
 	}
 }
