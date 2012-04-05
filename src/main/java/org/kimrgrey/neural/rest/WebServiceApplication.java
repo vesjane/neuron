@@ -24,7 +24,7 @@ public class WebServiceApplication extends Application {
      * Конструктор по умолчанию. Создает список ресурсов, доступных сервису во время исполнения.
      */
     public WebServiceApplication() {
-        resources.add(NeuralNetworkWebResource.class);
+        resources.add(NetworksWebResource.class);
     }
 
     /**

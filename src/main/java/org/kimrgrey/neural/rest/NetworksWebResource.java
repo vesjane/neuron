@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 @Path("/api/networks")
 @Produces("application/json; charset=UTF-8")
 @Consumes("application/json; charset=UTF-8")
-public class NeuralNetworkWebResource {
+public class NetworksWebResource {
 	/**
      * Логгер SLF4J для класса.
      */
@@ -30,7 +30,7 @@ public class NeuralNetworkWebResource {
      * Конструктор по умолчанию. Должен быть явно указан для классов, представляющих
      * ресурсы веб-сервиса.
      */
-	public NeuralNetworkWebResource() {
+	public NetworksWebResource() {
 	}
 
 	@GET
@@ -41,10 +41,14 @@ public class NeuralNetworkWebResource {
 		return Response.ok().entity(test).build();
 	}
 
-	@GET
-	@Path("/create")
-	// @POST
+	@POST
 	public Response create(@QueryParam("input") int input, @QueryParam("output") int output) {
 		return Response.ok().entity(String.format("Input %d and output %d", input, output)).build();
+	}
+
+	@GET
+	@Path("/{uid}")
+	public Response create(@PathParam("uid") String uid) {
+		return Response.ok().build();
 	}
 }
