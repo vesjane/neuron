@@ -1,4 +1,5 @@
 target/
+.idea/
 mongodb/
 .settings/
 src/main/webapp/WEB-INF/glassfish-web.xml
@@ -6,3 +7,4 @@ src/main/webapp/WEB-INF/glassfish-web.xml
 .project
 *.nblh~
 *.sql~
+*.iml

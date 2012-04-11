@@ -15,26 +15,46 @@
         	</New>
       	</Arg>
     </Call>
-    <Set name = "handler">
-    	<New class = "org.eclipse.jetty.servlet.ServletContextHandler">
-    		<Arg><Get class="org.eclipse.jetty.servlet.ServletContextHandler" name="SESSIONS"/></Arg>
-    		<Set name = "contextPath">/</Set>
-    		<Call name = "addServlet">
-    			<Arg>
-	    			<New class = "org.eclipse.jetty.servlet.ServletHolder">
-	    				<Arg>WebServiceApplicationServlet</Arg>
-                        <Arg>
-	    					<New class = "org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher"></New>
-	    				</Arg>
-	    				<Set name="initOrder">1</Set>
-	    				<Call name="setInitParameter">
-	    					<Arg>javax.ws.rs.Application</Arg>
-	    					<Arg>org.kimrgrey.neural.rest.WebServiceApplication</Arg>
-	    				</Call>
-	    			</New>
-    			</Arg>
-                <Arg>/api/*</Arg>
-    		</Call>
-    	</New>
+    <Set name="handler">
+        <New class="org.eclipse.jetty.server.handler.HandlerList">
+            <Set name="handlers">
+                <Array type="org.eclipse.jetty.server.Handler">
+                    <Item>
+                        <New class = "org.eclipse.jetty.servlet.ServletContextHandler">
+                            <Arg><Get class="org.eclipse.jetty.servlet.ServletContextHandler" name="SESSIONS"/></Arg>
+                            <Set name = "contextPath">/</Set>
+                            <Call name = "addServlet">
+                                <Arg>
+                                    <New class = "org.eclipse.jetty.servlet.ServletHolder">
+                                        <Arg>WebServiceApplicationServlet</Arg>
+                                        <Arg>
+                                            <New class = "org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher"></New>
+                                        </Arg>
+                                        <Set name="initOrder">1</Set>
+                                        <Call name="setInitParameter">
+                                            <Arg>javax.ws.rs.Application</Arg>
+                                            <Arg>org.kimrgrey.neural.rest.WebServiceApplication</Arg>
+                                        </Call>
+                                    </New>
+                                </Arg>
+                                <Arg>/api/*</Arg>
+                            </Call>
+                        </New>
+                    </Item>
+                    <Item>
+                        <New class="org.eclipse.jetty.server.handler.ResourceHandler">
+                            <Set name="directoriesListed">true</Set>
+                            <Set name="welcomeFiles">
+                                <Array type="String"><Item>index.html</Item></Array>
+                            </Set>
+                            <Set name="resourceBase">.</Set>
+                        </New>
+                    </Item>
+                    <Item>
+                        <New class="org.eclipse.jetty.server.handler.DefaultHandler"></New>
+                    </Item>
+                </Array>
+            </Set>
+        </New>
     </Set>
 </Configure>

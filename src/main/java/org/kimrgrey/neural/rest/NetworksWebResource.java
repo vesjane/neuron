@@ -13,6 +13,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.QueryParam;
 
+import org.kimrgrey.neural.NeuronNetwork.NeuralNetwork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ public class NetworksWebResource {
 	/**
      * Логгер SLF4J для класса.
      */
-    private static final Logger logger = LoggerFactory.getLogger(NeuralNetworkWebResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(NetworksWebResource.class);
 
     /**
      * Конструктор по умолчанию. Должен быть явно указан для классов, представляющих
@@ -35,9 +36,12 @@ public class NetworksWebResource {
 
 	@GET
 	public Response list() {
-		Map<String, String> test = new HashMap<String, String>();
-		test.put("Hello", "World");
-		test.put("Bye", "Bye");
+		Map<String, Object> test = new HashMap<String, Object>();
+        NeuralNetwork nn = new NeuralNetwork(2, 3, 1);
+        int maxRuns = 50000;
+        double minErrorCondition = 0.001;
+        test = nn.run(maxRuns, minErrorCondition);
+       // test.put("1","2");
 		return Response.ok().entity(test).build();
 	}
 
@@ -46,9 +50,9 @@ public class NetworksWebResource {
 		return Response.ok().entity(String.format("Input %d and output %d", input, output)).build();
 	}
 
-	@GET
+	/*@GET
 	@Path("/{uid}")
 	public Response create(@PathParam("uid") String uid) {
 		return Response.ok().build();
-	}
+	}*/
 }
