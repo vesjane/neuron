@@ -1,4 +1,4 @@
-package org.kimrgrey.neural.network;
+package org.kimrgrey.neuron.network;
 import java.util.*;
 
 public class Neuron {	

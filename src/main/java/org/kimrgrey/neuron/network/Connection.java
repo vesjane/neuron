@@ -1,4 +1,4 @@
-package org.kimrgrey.neural.network;
+package org.kimrgrey.neuron.network;
 
 public class Connection {
 	double weight = 0;

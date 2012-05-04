@@ -1,4 +1,4 @@
-package org.kimrgrey.neural.rest;
+package org.kimrgrey.neuron.rest;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.QueryParam;
 
-import org.kimrgrey.neural.network.NeuralNetwork;
+import org.kimrgrey.neuron.network.NeuralNetwork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package org.kimrgrey.neural.rest;
+package org.kimrgrey.neuron.rest;
 
 import java.util.HashSet;
 import java.util.Set;
