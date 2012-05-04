@@ -1,4 +1,4 @@
-package org.kimrgrey.neural.NeuronNetwork;
+package org.kimrgrey.neural.network;
 import java.text.*;
 import java.util.*;
 
