@@ -1,38 +1,59 @@
 package org.kimrgrey.neuron.network;
+import org.kimrgrey.neuron.rest.NetworksWebResource;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.*;
 import java.util.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class NeuralNetwork {
+
+    private static List<NeuralNetwork> networks = new ArrayList<NeuralNetwork>();
+
+    public synchronized static void create(int input, int hidden, int output) {
+        NeuralNetwork network = new NeuralNetwork(input, hidden, output);
+        networks.add(network);
+    }
+
+    public synchronized static NeuralNetwork find(int index) {
+        return networks.get(index);
+    }
+
 	static {
 		Locale.setDefault(Locale.ENGLISH);
 	}
 
-	final boolean isTrained = false;
-	final DecimalFormat df;
-	final Random rand = new Random();
-	final ArrayList<Neuron> inputLayer = new ArrayList<Neuron>();
-	final ArrayList<Neuron> hiddenLayer = new ArrayList<Neuron>();
-	final ArrayList<Neuron> outputLayer = new ArrayList<Neuron>();
-	final Neuron bias = new Neuron();
-	final int[] layers;
-	final int randomWeightMultiplier = 1;
 
-	final double epsilon = 0.00000000001;
 
-	final double learningRate = 0.9f;
-	final double momentum = 0.7f;
+
+	private boolean isTrained = false;
+    private DecimalFormat df;
+    private Random rand = new Random();
+    private ArrayList<Neuron> inputLayer = new ArrayList<Neuron>();
+    private ArrayList<Neuron> hiddenLayer = new ArrayList<Neuron>();
+    private ArrayList<Neuron> outputLayer = new ArrayList<Neuron>();
+    private Neuron bias = new Neuron();
+    private int[] layers;
+    private int randomWeightMultiplier = 1;
+
+    private double epsilon = 0.00000000001;
+
+    private double learningRate = 0.9f;
+    private double momentum = 0.7f;
 
 	// Inputs for xor problem
-	final double inputs[][] = { { 0, 0.4 }, { 1, 0 }, { 0, 0 }, { 1, 1 } };
+    private double inputs[][] = { { 0, 0.4 }, { 1, 0 }, { 0, 0 }, { 1, 1 } };
 
 	// Corresponding outputs, xor training data
-	final double expectedOutputs[][] = { { 0.4 }, { 1 }, { 0 }, { 1 } };
+    private double expectedOutputs[][] = { { 0.4 }, { 1 }, { 0 }, { 1 } };
 	double resultOutputs[][] = { { -1 }, { -1 }, { -1 }, { -1 } }; // dummy init
 	double output[];
     public HashMap<String,Object> neuralNet = new HashMap<String,Object>();
 
 	// for weight update all
-	final HashMap<String, Double> weightUpdate = new HashMap<String, Double>();
+    private HashMap<String, Double> weightUpdate = new HashMap<String, Double>();
 
 	/*public static void main(String[] args) {
 		NeuralNetwork nn = new NeuralNetwork(2, 4, 1);
@@ -44,8 +65,6 @@ public class NeuralNetwork {
 	public NeuralNetwork(int input, int hidden, int output) {
 		this.layers = new int[] { input, hidden, output };
 		df = new DecimalFormat("#.0#");
-
-
 		/**
 		 * Create all neurons and connections Connections are created in the
 		 * neuron class
@@ -70,15 +89,12 @@ public class NeuralNetwork {
 			}
 
 			else if (i == 2) { // output layer
-                neuralNet.put("output",layers[i]);
 				for (int j = 0; j < layers[i]; j++) {
 					Neuron neuron = new Neuron();
 					neuron.addInConnectionsS(hiddenLayer);
 					neuron.addBiasConnection(bias);
 					outputLayer.add(neuron);
 				}
-                neuralNet.put("trainingExample",inputs);
-                neuralNet.put("expectedOutputs",expectedOutputs);
 			} else {
 				System.out.println("!Error NeuralNetwork init");
 			}
@@ -92,37 +108,13 @@ public class NeuralNetwork {
 				conn.setWeight(newWeight);
 			}
 		}
-        ArrayList<HashMap<String,Object>> neuronConnection = new ArrayList<HashMap<String, Object>>();
-        HashMap<String,Object> hm = new HashMap<String, Object>();
-        for (Neuron n : hiddenLayer) {
-            ArrayList<Connection> connections = n.getAllInConnections();
-
-
-            for (Connection con : connections) {
-                double w = con.getWeight();
-                //System.out.println("n=" + n.id + " c=" + con.id + " w=" + w);
-                hm.put("idNeuron",n.id);
-                hm.put("conNeuron",con.id);
-                hm.put("weights",w);
-
-
-            }
-
-        }
-
-
 		for (Neuron neuron : outputLayer) {
 			ArrayList<Connection> connections = neuron.getAllInConnections();
 			for (Connection conn : connections) {
 				double newWeight = getRandom();
 				conn.setWeight(newWeight);
-                hm.put("idNeuron",neuron.id);
-                hm.put("conNeuron",conn.id);
-                hm.put("weights",newWeight);
 			}
 		}
-        neuronConnection.add(hm);
-        neuralNet.put("Connection",neuronConnection);
 
 		// reset id counters
 		Neuron.counter = 0;

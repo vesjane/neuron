@@ -5,13 +5,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.QueryParam;
 
 import org.kimrgrey.neuron.network.NeuralNetwork;
 import org.slf4j.Logger;
@@ -20,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 @Path("/api/networks")
 @Produces("application/json; charset=UTF-8")
-@Consumes("application/json; charset=UTF-8")
+
 public class NetworksWebResource {
 	/**
      * Логгер SLF4J для класса.
@@ -34,6 +29,7 @@ public class NetworksWebResource {
 	public NetworksWebResource() {
 	}
 
+
 	@GET
 	public Response list() {
 		Map<String, Object> test = new HashMap<String, Object>();
@@ -41,13 +37,25 @@ public class NetworksWebResource {
         int maxRuns = 50000;
         double minErrorCondition = 0.001;
         test = nn.run(maxRuns, minErrorCondition);
-       // test.put("1","2");
-		return Response.ok().entity(test).build();
+        test.put("1","2");
+        return Response.ok().entity(test).build();
 	}
 
+    @GET
+    @Path("/{index}")
+    public Response getNeuronNetwork(@PathParam("index") int index, @QueryParam("step") int step) {
+        //NeuralNetwork network = NeuralNetwork.find(index, step);
+        NeuralNetwork network = NeuralNetwork.find(index);
+        if (network == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(network).build();
+    }
+
 	@POST
-	public Response create(@QueryParam("input") int input, @QueryParam("output") int output) {
-		return Response.ok().entity(String.format("Input %d and output %d", input, output)).build();
+	public Response create(@FormParam("input") int input, @FormParam("hidden") int hidden, @FormParam("output") int output) {
+        NeuralNetwork.create(input, hidden, output);
+        return Response.ok().build();
 	}
 
 	/*@GET
