@@ -1,4 +1,4 @@
-(function($){
+
 	var Renderer = function(canvas)
 	{
 		var canvas = $(canvas).get(0);
@@ -82,40 +82,44 @@
       
 		}
 		return that;
-	}    
+	}
+
+    function createView(){
+    		sys = arbor.ParticleSystem(1000); // создаём систему
+    		sys.parameters({gravity:false}); // гравитация вкл
+    		sys.renderer = Renderer("#viewport") //начинаем рисовать в выбраной области
+
+    		 var num_out = document.getElementById('out').value;
+              var num_cols = document.getElementById('in').value;
+              var num_hidd = document.getElementById('hidd').value;
+
+
+               for( var j=0; j< num_cols;j++){
+                         sys.addNode("X"+j);
+                }
+                 for( var j=0; j< num_hidd;j++){
+                             sys.addNode("H"+j);
+                    }
+                     for( var j=0; j< num_out;j++){
+                                     sys.addNode("Y"+j);
+                            }
+                for( var i=0; i< num_cols;i++){
+                    for( var j=0; j< num_hidd;j++){
+                                  sys.addEdge(sys.getNode("X"+i),sys.getNode("H"+j));
+                    }
+
+                }
+                    for( var i=0; i< num_hidd;i++) {
+                            for( var j=0; j< num_out;j++){
+                                          sys.addEdge(sys.getNode("H"+i),sys.getNode("Y"+j));
+                            }
+                    }
+
+
+    	}
 
 	$(document).ready(function(){
-		sys = arbor.ParticleSystem(1000); // создаём систему
-		sys.parameters({gravity:false}); // гравитация вкл
-		sys.renderer = Renderer("#viewport") //начинаем рисовать в выбраной области
+		createView();
 
-		 var num_out = document.getElementById('out').value;
-          var num_cols = document.getElementById('in').value;
-          var num_hidd = document.getElementById('hidd').value;
-
-
-           for( var j=0; j< num_cols;j++){
-                     sys.addNode("X"+j);
-            }
-             for( var j=0; j< num_hidd;j++){
-                         sys.addNode("H"+j);
-                }
-                 for( var j=0; j< num_out;j++){
-                                 sys.addNode("Y"+j);
-                        }
-            for( var i=0; i< num_cols;i++){
-                for( var j=0; j< num_hidd;j++){
-                              sys.addEdge(sys.getNode("X"+i),sys.getNode("H"+j));
-                }
-
-            }
-                for( var i=0; i< num_hidd;i++) {
-                        for( var j=0; j< num_out;j++){
-                                      sys.addEdge(sys.getNode("H"+i),sys.getNode("Y"+j));
-                        }
-                }
-
-    
 	})
 
-})(this.jQuery)
