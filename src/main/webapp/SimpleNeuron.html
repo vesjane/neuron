@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/simpleNeuron.js"></script>
+<head>
+    function createTable()
+    {
+    createView();
+    var num_rows = 6;
+    var num_out = document.getElementById('out').value;
+    var num_cols = document.getElementById('in').value;
+    var theader = '<table  id = "simple_neuron" >\n';
+    var tbody = '';
+
+    tbody += '<tr>';
+        for( var j=0; j< num_cols;j++)
+        {
+        tbody += '<td align="center">';
+            tbody += 'X'+j;
+            tbody += '</td>'
+        }
+        for( var j=0; j< num_out;j++)
+        {
+        tbody += '<td align="center">';
+            tbody += 'Y'+j;
+            tbody += '</td>'
+        }
+
+        tbody += '</tr>\n';
+    for( var i=0; i< num_rows;i++)
+    {
+    tbody += '<tr>';
+        for( var j=0; j< num_cols;j++)
+        {
+        tbody += '<td >';
+            tbody += '<input size="3"/>'
+            tbody += '</td>'
+        }
+        for( var j=0; j< num_out;j++)
+        {
+        tbody += '<td >';
+            tbody += '<input size="3"/>'
+            tbody += '</td>'
+        }
+        tbody += '</tr>\n';
+    }
+    var tfooter = '</table>';
+    document.getElementById('wrapper').innerHTML = theader + tbody + tfooter;
+    }
+    </script>
+</head>
+<body onload="draw_b()">
+
+<table  >
+    <tr>
+        <form >
+            <td > Количество входов </td>
+            <td > <input name="input" type="text" size="3" id="in" value="2" /></td>
+            <td > Количество выходов </td>
+            <td > <input name="output" type="text" size="3" id="out" value="1"/></td>
+        </form>
+        <td width="20%">
+            <input type="submit" value='Создать' onclick='createTable()'>
+        </td>
+    </tr>
+
+</table>
+
+<table border=0>
+    <tr>
+        <td>
+            <canvas id="viewport" width="500" height="300">   </canvas>
+        </td>
+        <td>
+            <div id="wrapper"></div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
